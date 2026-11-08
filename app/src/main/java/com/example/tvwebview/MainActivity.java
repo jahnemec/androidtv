@@ -1,5 +1,3 @@
-package com.example.tvwebview;
-
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -15,22 +13,14 @@ public class MainActivity extends AppCompatActivity {
     private WebView webView;
     private static final String TARGET_URL = "https://sitenizin-adresi.com"; // Hedef sitenizi buraya yazın
 
-    // CSS ve JS bazlı reklam/popup engelleme scripti (Tırnaklar escape edildi)
-    private static final String AD_BLOCK_SCRIPT =
-        "javascript:(function() {" +
-        "   var style = document.createElement('style');" +
-        "   style.type = 'text/css';" +
-        "   style.innerHTML = " +
-        "       'iframe[src*=\"data:\"], iframe[src*=\"about:blank\"], ' +" +
-        "       '[id*=\"ad\"], [class*=\"ad\"], [id*=\"banner\"], [class*=\"banner\"], ' +" +
-        "       '[id*=\"popup\"], [class*=\"popup\"], [id*=\"popunder\"], [class*=\"popunder\"], ' +" +
-        "       '.ad, .ads, .ad-box, .ad-banner, .sponsor, .sponsored, ' +" +
-        "       'div[style*=\"z-index: 99999\"], div[style*=\"position: fixed\"] { ' +
-        "           display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; ' +
-        "       }';" +
-        "   document.getElementsByTagName('head')[0].appendChild(style);" +
-        "   window.open = function() { return null; };" +
-        "})();";
+    // Sade ve hatasız reklam engelleme scripti
+    private static final String AD_BLOCK_SCRIPT = "javascript:(function() {" +
+            "var style = document.createElement('style');" +
+            "style.type = 'text/css';" +
+            "style.innerHTML = 'iframe[src*=\"data:\"], iframe[src*=\"about:blank\"], [id*=\"ad\"], [class*=\"ad\"], [id*=\"banner\"], [class*=\"banner\"], [id*=\"popup\"], [class*=\"popup\"], .ad, .ads, div[style*=\"z-index: 99999\"] { display: none !important; visibility: hidden !important; };" +
+            "document.getElementsByTagName('head')[0].appendChild(style);" +
+            "window.open = function() { return null; };" +
+            "})();";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,4 +67,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        webView
+        webView.loadUrl(TARGET_URL);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+            webView.goBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+}
