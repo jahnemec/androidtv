@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private WebView webView;
-    private static final String TARGET_URL = "https://sitenizin-adresi.com"; // Hedef sitenizi buraya yazın
+private static final String TARGET_URL = "https://en.yts-official.com/";
 
     // Sade ve hatasız reklam engelleme scripti
     private static final String AD_BLOCK_SCRIPT = "javascript:(function() {" +
